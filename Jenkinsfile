@@ -9,22 +9,11 @@ pipeline {
             }
         }
 
-        stage('Load Image To Minikube') {
+        stage('Verify Image') {
             steps {
-                sh 'minikube image load flask-app:v2'
-            }
-        }
-
-        stage('Deploy To Kubernetes') {
-            steps {
-                sh 'kubectl set image deployment/flask-app flask-app=flask-app:v2'
-            }
-        }
-
-        stage('Verify Deployment') {
-            steps {
-                sh 'kubectl rollout status deployment/flask-app'
+                sh 'docker images | grep flask-app'
             }
         }
     }
 }
+
