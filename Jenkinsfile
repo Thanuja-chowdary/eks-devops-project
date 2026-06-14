@@ -9,11 +9,18 @@ pipeline {
             }
         }
 
-        stage('Verify Image') {
+        stage('Deploy To Kubernetes') {
             steps {
-                sh 'docker images | grep flask-app'
+                sh 'kubectl apply -f k8s/deployment.yaml'
+                sh 'kubectl apply -f k8s/service.yaml'
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                sh 'kubectl get pods'
+                sh 'kubectl get svc'
             }
         }
     }
 }
-
